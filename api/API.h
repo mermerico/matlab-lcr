@@ -114,6 +114,7 @@ typedef enum
     STATUS_HW,
     STATUS_SYS,
     STATUS_MAIN,
+	STATUS_VIDEO,
     CSC_DATA,
     GAMMA_CTL,
     BC_CTL,
@@ -194,6 +195,7 @@ int API_API_EXPORT LCR_GetLedEnables(bool *pSeqCtrl, bool *pRed, bool *pGreen, b
 int API_API_EXPORT LCR_GetVersion(unsigned int *pApp_ver, unsigned int *pAPI_ver, unsigned int *pSWConfig_ver, unsigned int *pSeqConfig_ver);
 int API_API_EXPORT LCR_SoftwareReset(void);
 int API_API_EXPORT LCR_GetStatus(unsigned char *pHWStatus, unsigned char *pSysStatus, unsigned char *pMainStatus);
+int API_API_EXPORT LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pHorizontalResolution, unsigned short *pVerticalResolution, unsigned char *pHSYNCPolarity, unsigned char *pVSYNCPolarity, unsigned int *pPixelClock, unsigned short *pHorizontalFrequency, unsigned short *pVerticalFrequency, unsigned short *pTotalPixelsPerLine, unsigned short *pTotalPixelsPerFrame, unsigned short *pActivePixelsPerLine, unsigned short *pActivePixelsPerFrame, unsigned short *pFirstPixel, unsigned short *pFirstLine);
 int API_API_EXPORT LCR_SetPWMEnable(unsigned int channel, bool Enable);
 int API_API_EXPORT LCR_GetPWMEnable(unsigned int channel, bool *pEnable);
 int API_API_EXPORT LCR_SetPWMConfig(unsigned int channel, unsigned int pulsePeriod, unsigned int dutyCycle);

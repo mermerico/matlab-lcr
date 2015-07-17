@@ -38,6 +38,7 @@ CmdFormat CmdList[255] =
     {   0x1A,  0x0A,  0x00   },      //STATUS_HW,
     {   0x1A,  0x0B,  0x00   },      //STATUS_SYS,
     {   0x1A,  0x0C,  0x00   },      //STATUS_MAIN,
+	{   0x07,  0x1C,  0x00   },      //STATUS_VIDEO,
     {   0x1A,  0x0D,  0x13   },      //CSC_DATA,
     {   0x1A,  0x0E,  0x01   },      //GAMMA_CTL,
     {   0,  0,  0   },      //BC_CTL,
@@ -990,6 +991,35 @@ int LCR_GetStatus(unsigned char *pHWStatus, unsigned char *pSysStatus, unsigned 
     return 0;
 }
 
+int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pHorizontalResolution, unsigned short *pVerticalResolution, unsigned char *pHSYNCPolarity, unsigned char *pVSYNCPolarity, unsigned int *pPixelClock, unsigned short *pHorizontalFrequency, unsigned short *pVerticalFrequency, unsigned short *pTotalPixelsPerLine, unsigned short *pTotalPixelsPerFrame, unsigned short *pActivePixelsPerLine, unsigned short *pActivePixelsPerFrame, unsigned short *pFirstPixel, unsigned short *pFirstLine)
+{
+	hidMessageStruct msg;
+	
+    LCR_PrepReadCmd(STATUS_VIDEO);
+    if(LCR_Read() > 0)
+    {
+        memcpy(&msg, InputBuffer, 65);
+
+        *pSignalDetectionStatus = msg.text.data[0];
+		*pHorizontalResolution = *(unsigned short *)&msg.text.data[1];
+		*pVerticalResolution = *(unsigned short *)&msg.text.data[3];
+        *pHSYNCPolarity = msg.text.data[6];
+		*pVSYNCPolarity = msg.text.data[7];
+		*pPixelClock = *(unsigned int *)&msg.text.data[8];
+        *pHorizontalFrequency = *(unsigned short *)&msg.text.data[12];
+		*pVerticalFrequency = *(unsigned short *)&msg.text.data[14];
+		*pTotalPixelsPerLine = *(unsigned short *)&msg.text.data[16];
+        *pTotalPixelsPerFrame = *(unsigned short *)&msg.text.data[18];
+		*pActivePixelsPerLine = *(unsigned short *)&msg.text.data[20];
+		*pActivePixelsPerFrame = *(unsigned short *)&msg.text.data[22];
+		*pFirstPixel = *(unsigned short *)&msg.text.data[24];
+		*pFirstLine = *(unsigned short *)&msg.text.data[26];
+    }
+    else
+        return -1;
+
+    return 0;
+}
 int LCR_SoftwareReset(void)
 /**
  * Use this API to reset the controller
