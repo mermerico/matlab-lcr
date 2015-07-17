@@ -992,7 +992,30 @@ int LCR_GetStatus(unsigned char *pHWStatus, unsigned char *pSysStatus, unsigned 
 }
 
 int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pHorizontalResolution, unsigned short *pVerticalResolution, unsigned char *pHSYNCPolarity, unsigned char *pVSYNCPolarity, unsigned int *pPixelClock, unsigned short *pHorizontalFrequency, unsigned short *pVerticalFrequency, unsigned short *pTotalPixelsPerLine, unsigned short *pTotalPixelsPerFrame, unsigned short *pActivePixelsPerLine, unsigned short *pActivePixelsPerFrame, unsigned short *pFirstPixel, unsigned short *pFirstLine)
-{
+/**
+ * This function is to be used to check the current status of the video signal.
+ * Refer to DLPC350 Programmer's guide section 2.1 "DLPC350 Status Commands" for more information
+ *
+ * @param pSignalDetectionStatus - O -  Signal detection status: stopped (0), processing (1), detected (2), or lock failed (3)
+ * @param pHorizontalResolution - O - Horizontal resolution in pixels
+ * @param pVerticalResolution - O - Vertical resolution in pixels
+ * @param pHSYNCPolarity - O - Whether HSYNC is positive (1) or negative (0)
+ * @param pVSYNCPolarity - O - Whether VSYNC is positive (1) or negative (0)
+ * @param pPixelClock - O - The pixel clock rate in 100KHz
+ * @param pHorizontalFrequency - O - The line rate in 100KHz
+ * @param pVerticalFrequency - O - The vertical refresh rate in 100Hz
+ * @param pTotalPixelsPerLine - O - Total pixels per line
+ * @param pTotalPixelsPerFrame - O - Total pixels per frame
+ * @param pActivePixelsPerLine - O - Active pixels per line
+ * @param pActivePixelsPerFrame - O - Active pixels per frame
+ * @param pFirstPixel - O - First (active) pixel in line
+ * @param pFirstLine - O - First (active) line in frame
+ *
+ * @return 0 PASS <BR>
+ *         -1 FAIL <BR>
+ *
+ */
+ {
 	hidMessageStruct msg;
 	
     LCR_PrepReadCmd(STATUS_VIDEO);
