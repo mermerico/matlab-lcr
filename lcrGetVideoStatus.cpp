@@ -15,16 +15,16 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
 	
     unsigned char signalDetectionStatus, HSYNCPolarity, VSYNCPolarity;
-	unsigned short horizontalResolution, verticalResolution, horizontalFrequency, verticalFrequency, totalPixelsPerLine, totalPixelsPerFrame, activePixelsPerLine, activePixelsPerFrame, firstPixel, firstLine;
+	unsigned short horizontalResolution, verticalResolution, horizontalFrequency, verticalFrequency, totalPixelsPerLine, totalLinesPerFrame, activePixelsPerLine, activeLinesPerFrame, firstPixel, firstLine;
 	unsigned int pixelClock;
 					
-    int result = LCR_GetVideoStatus(&signalDetectionStatus, &horizontalResolution, &verticalResolution, &HSYNCPolarity, &VSYNCPolarity, &pixelClock, &horizontalFrequency, &verticalFrequency, &totalPixelsPerLine, &totalPixelsPerFrame, &activePixelsPerLine, &activePixelsPerFrame, &firstPixel, &firstLine);
+    int result = LCR_GetVideoStatus(&signalDetectionStatus, &horizontalResolution, &verticalResolution, &HSYNCPolarity, &VSYNCPolarity, &pixelClock, &horizontalFrequency, &verticalFrequency, &totalPixelsPerLine, &totalLinesPerFrame, &activePixelsPerLine, &activePixelsPerFrame, &firstPixel, &firstLine);
     if (result < 0)
     {
         mexErrMsgIdAndTxt("lcr:failedToGetVideoStatus", "Failed to get video status");
         return;
     }
-	const char *fieldnames[] = {"signalDetectionStatus", "HSYNCPolarity", "VSYNCPolarity","horizontalResolution", "verticalResolution", "horizontalFrequency", "verticalFrequency", "totalPixelsPerLine", "totalPixelsPerFrame", "activePixelsPerLine", "activePixelsPerFrame", "firstPixel", "firstLine", "pixelClock"};
+	const char *fieldnames[] = {"signalDetectionStatus", "HSYNCPolarity", "VSYNCPolarity","horizontalResolution", "verticalResolution", "horizontalFrequency", "verticalFrequency", "totalPixelsPerLine", "totalLinesPerFrame", "activePixelsPerLine", "activeLinesPerFrame", "firstPixel", "firstLine", "pixelClock"};
 
 	plhs[0] = mxCreateStructMatrix(1,1,NUMFIELDS,fieldnames);
 	
@@ -56,9 +56,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	mxSetFieldByNumber(plhs[0],0,5 , mxCreateDoubleScalar(horizontalFrequency));
 	mxSetFieldByNumber(plhs[0],0,6 , mxCreateDoubleScalar(verticalFrequency));
 	mxSetFieldByNumber(plhs[0],0,7 , mxCreateDoubleScalar(totalPixelsPerLine));
-	mxSetFieldByNumber(plhs[0],0,8 , mxCreateDoubleScalar(totalPixelsPerFrame));
+	mxSetFieldByNumber(plhs[0],0,8 , mxCreateDoubleScalar(totalLinesPerFrame));
 	mxSetFieldByNumber(plhs[0],0,9 , mxCreateDoubleScalar(activePixelsPerLine));
-	mxSetFieldByNumber(plhs[0],0,10, mxCreateDoubleScalar(activePixelsPerFrame));
+	mxSetFieldByNumber(plhs[0],0,10, mxCreateDoubleScalar(activeLinesPerFrame));
 	mxSetFieldByNumber(plhs[0],0,11, mxCreateDoubleScalar(firstPixel));
 	mxSetFieldByNumber(plhs[0],0,12, mxCreateDoubleScalar(firstLine));
 	mxSetFieldByNumber(plhs[0],0,13, mxCreateDoubleScalar(pixelClock));

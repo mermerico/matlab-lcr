@@ -991,7 +991,7 @@ int LCR_GetStatus(unsigned char *pHWStatus, unsigned char *pSysStatus, unsigned 
     return 0;
 }
 
-int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pHorizontalResolution, unsigned short *pVerticalResolution, unsigned char *pHSYNCPolarity, unsigned char *pVSYNCPolarity, unsigned int *pPixelClock, unsigned short *pHorizontalFrequency, unsigned short *pVerticalFrequency, unsigned short *pTotalPixelsPerLine, unsigned short *pTotalPixelsPerFrame, unsigned short *pActivePixelsPerLine, unsigned short *pActivePixelsPerFrame, unsigned short *pFirstPixel, unsigned short *pFirstLine)
+int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pHorizontalResolution, unsigned short *pVerticalResolution, unsigned char *pHSYNCPolarity, unsigned char *pVSYNCPolarity, unsigned int *pPixelClock, unsigned short *pHorizontalFrequency, unsigned short *pVerticalFrequency, unsigned short *pTotalPixelsPerLine, unsigned short *pTotalLinesPerFrame, unsigned short *pActivePixelsPerLine, unsigned short *pActiveLinesPerFrame, unsigned short *pFirstPixel, unsigned short *pFirstLine)
 /**
  * This function is to be used to check the current status of the video signal.
  * Refer to DLPC350 Programmer's guide section 2.1 "DLPC350 Status Commands" for more information
@@ -1001,13 +1001,13 @@ int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pH
  * @param pVerticalResolution - O - Vertical resolution in pixels
  * @param pHSYNCPolarity - O - Whether HSYNC is positive (1) or negative (0)
  * @param pVSYNCPolarity - O - Whether VSYNC is positive (1) or negative (0)
- * @param pPixelClock - O - The pixel clock rate in 100KHz
- * @param pHorizontalFrequency - O - The line rate in 100KHz
- * @param pVerticalFrequency - O - The vertical refresh rate in 100Hz
+ * @param pPixelClock - O - The pixel clock rate in units of kHz
+ * @param pHorizontalFrequency - O - The line rate in units of Hz
+ * @param pVerticalFrequency - O - The vertical refresh rate in units of 0.01 Hz
  * @param pTotalPixelsPerLine - O - Total pixels per line
- * @param pTotalPixelsPerFrame - O - Total pixels per frame
+ * @param pTotalLinesPerFrame - O - Total lines per frame
  * @param pActivePixelsPerLine - O - Active pixels per line
- * @param pActivePixelsPerFrame - O - Active pixels per frame
+ * @param pActiveLinesPerFrame - O - Active lines per frame
  * @param pFirstPixel - O - First (active) pixel in line
  * @param pFirstLine - O - First (active) line in frame
  *
@@ -1032,9 +1032,9 @@ int LCR_GetVideoStatus(unsigned char *pSignalDetectionStatus, unsigned short *pH
         *pHorizontalFrequency = *(unsigned short *)&msg.text.data[12];
 		*pVerticalFrequency = *(unsigned short *)&msg.text.data[14];
 		*pTotalPixelsPerLine = *(unsigned short *)&msg.text.data[16];
-        *pTotalPixelsPerFrame = *(unsigned short *)&msg.text.data[18];
+        *pTotalLinesPerFrame = *(unsigned short *)&msg.text.data[18];
 		*pActivePixelsPerLine = *(unsigned short *)&msg.text.data[20];
-		*pActivePixelsPerFrame = *(unsigned short *)&msg.text.data[22];
+		*pActiveLinesPerFrame = *(unsigned short *)&msg.text.data[22];
 		*pFirstPixel = *(unsigned short *)&msg.text.data[24];
 		*pFirstLine = *(unsigned short *)&msg.text.data[26];
     }
