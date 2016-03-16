@@ -12,13 +12,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     {
         mexErrMsgIdAndTxt("lcr:usage", "Usage: status = lcrGetVideoStatus()");
         return;
-    }
+    }				
 	
-    unsigned char signalDetectionStatus, HSYNCPolarity, VSYNCPolarity;
-	unsigned short horizontalResolution, verticalResolution, horizontalFrequency, verticalFrequency, totalPixelsPerLine, totalLinesPerFrame, activePixelsPerLine, activeLinesPerFrame, firstPixel, firstLine;
-	unsigned int pixelClock;
-					
-    int result = LCR_GetVideoStatus(&signalDetectionStatus, &horizontalResolution, &verticalResolution, &HSYNCPolarity, &VSYNCPolarity, &pixelClock, &horizontalFrequency, &verticalFrequency, &totalPixelsPerLine, &totalLinesPerFrame, &activePixelsPerLine, &activePixelsPerFrame, &firstPixel, &firstLine);
+	VideoSigStatus vidSigStat;
+    int result = DLPC350_GetVideoSignalStatus(&vidSigStat)
     if (result < 0)
     {
         mexErrMsgIdAndTxt("lcr:failedToGetVideoStatus", "Failed to get video status");
@@ -29,7 +26,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	plhs[0] = mxCreateStructMatrix(1,1,NUMFIELDS,fieldnames);
 	
 	string detectionString;
-	switch(signalDetectionStatus)
+	switch(vidSigStat.Status)
 	{
 		case 0:
 			detectionString = "Stopped";
@@ -49,17 +46,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	}
 		
 	mxSetFieldByNumber(plhs[0],0,0 , mxCreateString(detectionString.c_str()));
-	mxSetFieldByNumber(plhs[0],0,1 , mxCreateDoubleScalar(HSYNCPolarity));
-	mxSetFieldByNumber(plhs[0],0,2 , mxCreateDoubleScalar(VSYNCPolarity));
-	mxSetFieldByNumber(plhs[0],0,3 , mxCreateDoubleScalar(horizontalResolution));
-	mxSetFieldByNumber(plhs[0],0,4 , mxCreateDoubleScalar(verticalResolution));
-	mxSetFieldByNumber(plhs[0],0,5 , mxCreateDoubleScalar(horizontalFrequency));
-	mxSetFieldByNumber(plhs[0],0,6 , mxCreateDoubleScalar(verticalFrequency));
-	mxSetFieldByNumber(plhs[0],0,7 , mxCreateDoubleScalar(totalPixelsPerLine));
-	mxSetFieldByNumber(plhs[0],0,8 , mxCreateDoubleScalar(totalLinesPerFrame));
-	mxSetFieldByNumber(plhs[0],0,9 , mxCreateDoubleScalar(activePixelsPerLine));
-	mxSetFieldByNumber(plhs[0],0,10, mxCreateDoubleScalar(activeLinesPerFrame));
-	mxSetFieldByNumber(plhs[0],0,11, mxCreateDoubleScalar(firstPixel));
-	mxSetFieldByNumber(plhs[0],0,12, mxCreateDoubleScalar(firstLine));
-	mxSetFieldByNumber(plhs[0],0,13, mxCreateDoubleScalar(pixelClock));
+	mxSetFieldByNumber(plhs[0],0,1 , mxCreateDoubleScalar(vidSigStat.HSyncPol));
+	mxSetFieldByNumber(plhs[0],0,2 , mxCreateDoubleScalar(vidSigStat.VSyncPol));
+	mxSetFieldByNumber(plhs[0],0,3 , mxCreateDoubleScalar(vidSigStat.HRes));
+	mxSetFieldByNumber(plhs[0],0,4 , mxCreateDoubleScalar(vidSigStat.VRes));
+	mxSetFieldByNumber(plhs[0],0,5 , mxCreateDoubleScalar(vidSigStat.HFreq));
+	mxSetFieldByNumber(plhs[0],0,6 , mxCreateDoubleScalar(vidSigStat.VFreq));
+	mxSetFieldByNumber(plhs[0],0,7 , mxCreateDoubleScalar(vidSigStat.TotPixPerLine));
+	mxSetFieldByNumber(plhs[0],0,8 , mxCreateDoubleScalar(vidSigStat.TotLinPerFrame));
+	mxSetFieldByNumber(plhs[0],0,9 , mxCreateDoubleScalar(vidSigStat.ActvPixPerLine));
+	mxSetFieldByNumber(plhs[0],0,10, mxCreateDoubleScalar(vidSigStat.ActvLinePerFrame));
+	mxSetFieldByNumber(plhs[0],0,11, mxCreateDoubleScalar(vidSigStat.FirstActvPix));
+	mxSetFieldByNumber(plhs[0],0,12, mxCreateDoubleScalar(vidSigStat.FirstActvLine));
+	mxSetFieldByNumber(plhs[0],0,13, mxCreateDoubleScalar(vidSigStat.PixClock));
 }
