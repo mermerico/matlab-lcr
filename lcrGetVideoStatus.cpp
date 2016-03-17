@@ -15,7 +15,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }				
 	
 	VideoSigStatus vidSigStat;
-    int result = DLPC350_GetVideoSignalStatus(&vidSigStat)
+    int result = DLPC350_GetVideoSignalStatus(&vidSigStat);
     if (result < 0)
     {
         mexErrMsgIdAndTxt("lcr:failedToGetVideoStatus", "Failed to get video status");
