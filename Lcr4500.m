@@ -70,7 +70,7 @@ classdef Lcr4500 < handle
         end
         
         function mode = getMode(obj) %#ok<MANU>
-            m = LcrMode(lcrGetMode());
+            m = lcrGetMode();
             if m
                 mode = 'pattern';
             else
@@ -151,7 +151,7 @@ classdef Lcr4500 < handle
                 error(['The number of patterns must be less than or equal to ' num2str(maxNumPatterns)]);
             end
             
-            if obj.getMode() ~= LcrMode.PATTERN
+            if ~strcmp(obj.getMode(),'pattern')
                 error('Must be in pattern mode to set pattern attributes');
             end
             
@@ -225,7 +225,7 @@ classdef Lcr4500 < handle
         end
         
         function [bitDepth, colors, numPatterns] = getPatternAttributes(obj)
-            if obj.getMode() ~= LcrMode.PATTERN
+            if  ~strcmp(obj.getMode(),'pattern')
                 error('Must be in pattern mode to get pattern attributes');
             end
             
@@ -240,7 +240,7 @@ classdef Lcr4500 < handle
         
         function standby(obj)
             for i = 1:5
-                lcrSetMode(logical(LcrMode.PATTERN));
+                obj.setMode('pattern');
                 pause(0.1)
                 lcrPatternDisplay(0);
                 pause(0.1);
@@ -262,7 +262,7 @@ classdef Lcr4500 < handle
             for i = 1:50
                 lcrSetPowerMode(0);
                 pause(0.1);
-                lcrSetMode(logical(LcrMode.VIDEO));
+                obj.setMode('video');
                 pause(0.1);
                 try
                     status = obj.getStatus();
